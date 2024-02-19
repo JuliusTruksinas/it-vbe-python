@@ -30,13 +30,13 @@ with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
     uzd_kiekis, uzd_laikai, uzd_taskai, *dalyviai_text = duom_failas.read().split("\n")
 
     uzd_kiekis = int(uzd_kiekis)
-    uzd_laikai = [int(duomuo) for duomuo in uzd_laikai.split(" ")]
-    uzd_taskai = [int(duomuo) for duomuo in uzd_taskai.split(" ")]
+    uzd_laikai = [int(duomuo) for duomuo in uzd_laikai.split()]
+    uzd_taskai = [int(duomuo) for duomuo in uzd_taskai.split()]
 
 """ Praeinama pro kiekvieno dalyvio duomenis, ju rezultatai apskaiciuojami su funkcija 'apskaiciuok_dalyvio_rez'
 ir kiekvienas dalyvis (zodyno struktura) yra pridedamas i dalyviu sarasa 'dalyviai' """
 for dalyvis_text in dalyviai_text:
-    dalyvio_duom = dalyvis_text.split(" ")
+    dalyvio_duom = dalyvis_text.split()
     sprendimo_laikai = [int(duomuo) for duomuo in dalyvio_duom[-uzd_kiekis:]]
     vardas = " ".join(dalyvio_duom[:-uzd_kiekis])
 

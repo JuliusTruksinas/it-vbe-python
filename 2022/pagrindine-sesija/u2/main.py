@@ -19,7 +19,7 @@ with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
     for dienos_duom_text in dienu_duom:
         """ saugomi visi atlikti pratimai dienoje (iskaitant pasikartojancius) """
         atlikti_pratimai = []
-        pratimu_sk, *dienos_duom = dienos_duom_text.split(" ")
+        pratimu_sk, *dienos_duom = dienos_duom_text.split()
 
         for i in range(0, int(pratimu_sk)*3, 3):
             pavadinimas, dienos_metas, pratimo_min = dienos_duom[i:i+3]

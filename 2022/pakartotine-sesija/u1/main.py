@@ -45,11 +45,11 @@ def irasyk_rezultatus(parduotuves, biudzetas, minimali_suma):
 """ Perskaitomi pradiniai duomenys, visos parduotuves issaugomos i 'parduotuves' zodyno duomenu struktura """
 with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
     pirma_eil, megstami_produktai, *parduotuves_text = duom_failas.read().split("\n")
-    biudzetas = float(pirma_eil.split(" ")[-1])
-    megstami_produktai = megstami_produktai.split(" ")
+    biudzetas = float(pirma_eil.split()[-1])
+    megstami_produktai = megstami_produktai.split()
 
     for parduotuve_text in parduotuves_text:
-        parduotuves_pavadinimas, *parduotuves_kainos = parduotuve_text.split(" ")
+        parduotuves_pavadinimas, *parduotuves_kainos = parduotuve_text.split()
         parduotuves_kainos = [float(kaina) for kaina in parduotuves_kainos]
 
         parduotuves[parduotuves_pavadinimas] = {

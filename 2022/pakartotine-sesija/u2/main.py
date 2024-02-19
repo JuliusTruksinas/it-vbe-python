@@ -46,10 +46,10 @@ def irasyk_duomenis(dalyviai_surinke_max_taskus, diskvalifikuoti_dalyviai):
 with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
     miestu_kiekis = int(duom_failas.readline().strip())
     for _ in range(miestu_kiekis):
-        miestas, dalyviu_kiekis = duom_failas.readline().split(" ")
+        miestas, dalyviu_kiekis = duom_failas.readline().split()
         dalyviu_kiekis = int(dalyviu_kiekis)
         for _ in range(dalyviu_kiekis):
-            vardas, zodziu_sk, klaidu_sk = duom_failas.readline().split(" ")
+            vardas, zodziu_sk, klaidu_sk = duom_failas.readline().split()
             zodziu_sk, klaidu_sk = int(zodziu_sk), int(klaidu_sk)
 
             dalyviai[vardas] = {

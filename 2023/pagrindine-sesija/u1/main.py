@@ -31,7 +31,7 @@ def apskaiciuok_klases_duomenis(klases):
 with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
     klasiu_duom_text = duom_failas.read().split("\n")[1:]
     for klases_duom_text in klasiu_duom_text:
-        klase, zingsnio_ilgis_cm, *nueiti_zingsniai = klases_duom_text.split(" ")
+        klase, zingsnio_ilgis_cm, *nueiti_zingsniai = klases_duom_text.split()
         nueiti_zingsniai = [int(duomuo) for duomuo in nueiti_zingsniai]
         zingsnio_ilgis_cm = int(zingsnio_ilgis_cm)
         mokinys = {

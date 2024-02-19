@@ -32,7 +32,7 @@ testai = {}
 
 with open(DUOMENU_FAILAS, 'r', encoding='utf-8') as duomenu_failas:
     for rezultatai in duomenu_failas.read().split('\n')[1:]:
-        numeris, var, *taskai = rezultatai.split(" ")
+        numeris, var, *taskai = rezultatai.split()
         testo_variantas = f"{numeris} {var}"
         taskai = [int(duomuo) for duomuo in taskai]
         testai[testo_variantas] = testai.get(testo_variantas, []) + [taskai]

@@ -60,10 +60,10 @@ with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
 
 """ Perskaitomi ir issaugomi visi slaptazodziai 'visi_slaptazodziai' zodyno strukturoje"""    
 for slaptazodis_text in slaptazodziai_text:
-    if len(slaptazodis_text.split(" ")) > 6:
-        slaptazodzio_reiksme, *parametrai, zyma = slaptazodis_text.split(" ")
+    if len(slaptazodis_text.split()) > 6:
+        slaptazodzio_reiksme, *parametrai, zyma = slaptazodis_text.split()
     else:
-        slaptazodzio_reiksme, *parametrai = slaptazodis_text.split(" ")
+        slaptazodzio_reiksme, *parametrai = slaptazodis_text.split()
         zyma = None
 
     ilgis, didziuju_kiekis, mazuju_kiekis, skaitmenu_kiekis, spec_simboliu_kiekis = [int(duomuo) for duomuo in parametrai]

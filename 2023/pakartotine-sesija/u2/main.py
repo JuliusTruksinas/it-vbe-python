@@ -37,7 +37,7 @@ mokiniai = []
 reprezentuojantis kiekviena mokini '''
 with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duomenu_failas:
     for eilute in duomenu_failas.read().split("\n")[1:]:
-        vardas, *ejimai = eilute.split(" ")
+        vardas, *ejimai = eilute.split()
         mokiniai.append({
             VARDAS: vardas,
             EJIMAI: ejimai
