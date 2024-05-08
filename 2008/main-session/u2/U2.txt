@@ -1,0 +1,6 @@
+5
+Rytas               5 1 2 5 4 6
+Vakarai             3 12 5 4
+Baltasis lokys      6 12 1 6 8 7 3
+Panerys             1 12
+Rudasis tiltas      3 8 14 4
