@@ -1,0 +1,7 @@
+6 5
+12 25 35 2 3 9
+Salotos        5 1  0  0 2 1
+Kepsnys        6 3 12  9 0 0
+Gaiva          0 0  1 15 1 0
+Ledai Miau     0 0  5  5 5 1
+Tortas         1 2  1  1 1 1
