@@ -1,0 +1,5 @@
+4 6
+MARY       2 2 5 2 1 2
+PATRICIA   6 1 1 1 2 1
+LINDA      4 4 4 2 5 5
+BLINDA     6 5 5 2 2 4
