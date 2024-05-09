@@ -1,0 +1,7 @@
+6 70 10 15
+Elektrenai     50.5
+Ziezmariai     20
+Kaunas         22.35
+Raseiniai      80
+Kryzkalnis     20
+Klaipeda       100.8
