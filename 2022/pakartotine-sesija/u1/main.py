@@ -1,74 +1,64 @@
-""" Uzduoties konstantos """
-DUOMENU_FAILAS = "U1.txt"
-REZULTATU_FAILAS = "U1rez.txt"
-PRANESIMAS_NEPAVYKS_NUSIPIRKTI = "Nepavyks nusipirkti"
+# task constants
+DATA_FILE = "U1.txt"
+RESULTS_FILE = "U1rez.txt"
+NAME_LENGTH = 10
+PRICES = "prices"
+MIN_PRICE_ITEMS = "min_price_items"
+TOO_EXPENSIVE_LABEL = "Nepavyks nusipirkti"
 
-MAZIAUSIOS_PRODUKTU_KAINOS = "maziausios_produktu_kainos"
-MINIMALI_SUMA = "minimali_suma"
-PARDUOTUVES_KAINOS = "parduotuves_kainos"
-PARDUOTUVES_PIGIAUSIOS_PREKES = "parduotuves_pigiausios_prekes"
+def main():
+  favourite_fruits, budget, stores = read_data_file()
+  min_prices = get_min_prices(stores)
+  total_min_price = round(sum(min_prices), 2)
+  get_stores_min_price_items(stores, min_prices, favourite_fruits)
+  write_results_to_a_file(total_min_price, round(budget, 2), stores)
 
-parduotuves = {}
+# this function reads the data file and returns the favourite fruits, budget and all of the stores data
+def read_data_file():
+  stores = {}
+  with open(DATA_FILE, "r", encoding="utf-8") as data_file:
+    budget = float(data_file.readline().strip().split()[1])
+    favourite_fruits = [
+        fruit.ljust(NAME_LENGTH)
+        for fruit in data_file.readline().strip().split()
+    ]
+    for line in data_file.read().strip().split("\n"):
+      store_name = line[:NAME_LENGTH]
+      prices = [float(d) for d in line[NAME_LENGTH + 1:].split()]
+      stores[store_name] = {PRICES: prices}
+    return favourite_fruits, budget, stores
 
-""" Funkcija, randanti maziausias prekiu kainas ir ju suma """
-def rask_min_prekiu_kainas_ir_ju_suma(parduotuves):
-    maziausios_produktu_kainos = [min([kaina for kaina in kainos if kaina > 0]) for kainos in zip(*[value[PARDUOTUVES_KAINOS] for value in parduotuves.values()])]
-    
-    return {
-        MAZIAUSIOS_PRODUKTU_KAINOS: maziausios_produktu_kainos,
-        MINIMALI_SUMA: round(sum(maziausios_produktu_kainos), 2)
-    }
+# this function gets the min prices of every product and returns them in a list
+def get_min_prices(stores):
+  stores_prices = [item[PRICES] for item in stores.values()]
+  return [
+      min([price for price in prices if price > 0])
+      for prices in zip(*stores_prices)
+  ]
 
-""" Funkcija, randanti kiekvienoje parduotuveje norimas prekes maziausiomis kainomis """
-def rask_parduotuviu_pigiausias_prekes(parduotuves, maziausios_produktu_kainos, megstami_produktai):
-    for parduotuves_duomenys in parduotuves.values():
-        for i in range(len(megstami_produktai)):
-            if parduotuves_duomenys[PARDUOTUVES_KAINOS][i] == maziausios_produktu_kainos[i]:
-                parduotuves_pigiausios_prekes = parduotuves_duomenys.get(PARDUOTUVES_PIGIAUSIOS_PREKES, [])
-                parduotuves_pigiausios_prekes.append(megstami_produktai[i])
-                parduotuves_duomenys[PARDUOTUVES_PIGIAUSIOS_PREKES] = parduotuves_pigiausios_prekes
+# this function gets all of the products that have the lowest price in that store
+def get_stores_min_price_items(stores, min_prices, favourite_fruits):
+  for store_data in stores.values():
+    store_data[MIN_PRICE_ITEMS] = []
+    for i, price in enumerate(store_data[PRICES]):
+      if price == min_prices[i]:
+        store_data[MIN_PRICE_ITEMS].append(favourite_fruits[i])
 
-""" Funkcija irasanti galutinius rezultatus i rezultatu faila, kaip nurodyta salygoje """
-def irasyk_rezultatus(parduotuves, biudzetas, minimali_suma):
-    with open(REZULTATU_FAILAS, "w", encoding="utf-8") as rez_failas:
-        if biudzetas < minimali_suma:
-            rez_failas.write(PRANESIMAS_NEPAVYKS_NUSIPIRKTI)
-            return
-        
-        galutiniai_duomenys = f"{minimali_suma:.2f}\n"
 
-        for parduotuves_pavadinimas, parduotuves_duomenys in parduotuves.items():
-            galutiniai_duomenys += f"{parduotuves_pavadinimas} {' '.join(parduotuves_duomenys[PARDUOTUVES_PIGIAUSIOS_PREKES])}\n"
-        
-        rez_failas.write(galutiniai_duomenys.strip())
+# this function writes the results to a file as specified in the task
+def write_results_to_a_file(total_min_price, budget, stores):
+  if total_min_price > budget:
+    with open(RESULTS_FILE, "w", encoding="utf-8") as results_file:
+      results_file.write(TOO_EXPENSIVE_LABEL)
+      return
 
-""" Perskaitomi pradiniai duomenys, visos parduotuves issaugomos i 'parduotuves' zodyno duomenu struktura """
-with open(DUOMENU_FAILAS, "r", encoding="utf-8") as duom_failas:
-    pirma_eil, megstami_produktai, *parduotuves_text = duom_failas.read().split("\n")
-    biudzetas = float(pirma_eil.split()[-1])
-    megstami_produktai = megstami_produktai.split()
-
-    for parduotuve_text in parduotuves_text:
-        parduotuves_pavadinimas, *parduotuves_kainos = parduotuve_text.split()
-        parduotuves_kainos = [float(kaina) for kaina in parduotuves_kainos]
-
-        parduotuves[parduotuves_pavadinimas] = {
-           PARDUOTUVES_KAINOS: parduotuves_kainos
-            }
-
-""" Randamos maziausios produktu kainos ir ju suma """
-maziausios_produktu_kainos, minimali_suma = rask_min_prekiu_kainas_ir_ju_suma(parduotuves).values()
-
-""" Randamos kiekvienoje parduotuveje norimos prekes maziausiomis kainomis """
-rask_parduotuviu_pigiausias_prekes(parduotuves, maziausios_produktu_kainos, megstami_produktai)
-
-""" Ismetamos parduotuves, kurios neturi norimu prekiu maziausiomis kainomis """
-parduotuves = {parduotuves_pavadinimas: parduotuves_duomenys
-               for parduotuves_pavadinimas, parduotuves_duomenys in parduotuves.items()
-               if parduotuves_duomenys.get(PARDUOTUVES_PIGIAUSIOS_PREKES)}
-
-""" Partuotuves isrikiuojamos pagal turimu prekiu pigiausiomis kainomis kieki mazejanciai """
-parduotuves = dict(sorted(parduotuves.items(), key=lambda item: len(item[1][PARDUOTUVES_PIGIAUSIOS_PREKES]), reverse=True))
-
-""" Irasomi galutiniai rezultatai i rezultatu faila, kaip pateikta salygoje """
-irasyk_rezultatus(parduotuves, biudzetas, minimali_suma)
+  final_results = f"{total_min_price:.2f}\n"
+  sorted_stores = sorted(stores.items(), key=lambda item: len(item[1][MIN_PRICE_ITEMS]), reverse=True)
+  for store_name, store_data in sorted_stores:
+    if len(store_data[MIN_PRICE_ITEMS]) == 0:
+      continue
+    final_results += f"{store_name} {' '.join(store_data[MIN_PRICE_ITEMS])}\n"
+  with open(RESULTS_FILE, "w", encoding="utf-8") as results_file:
+    results_file.write(final_results.strip("\n"))
+  
+main()
